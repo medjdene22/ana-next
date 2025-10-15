@@ -31,7 +31,7 @@ app
         "X-Requested-With",
         "X-Better-Auth",
       ],
-      allowMethods: ["POST", "GET", "OPTIONS", "DELETE"],
+      allowMethods: ["POST", "GET", "OPTIONS", "DELETE", "PUT", "PATCH"],
       exposeHeaders: ["Content-Length"],
       maxAge: 600,
       credentials: true,
@@ -40,7 +40,10 @@ app
   .options("*", (c) => {
     c.header("Access-Control-Allow-Origin", "*");
     c.header("Access-Control-Allow-Credentials", "true");
-    c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    c.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+    );
     c.header(
       "Access-Control-Allow-Headers",
       "Content-Type, Authorization, X-Requested-With, X-Better-Auth",
