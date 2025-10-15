@@ -20,7 +20,11 @@ app
   .use(
     "*", // or replace with "*" to enable cors for all routes
     cors({
-      origin: ["http://localhost:3000", "http://localhost:3001"], // replace with your origin
+      origin: [
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "https://imad-ana.pages.dev",
+      ], // replace with your origin
       allowHeaders: [
         "Content-Type",
         "Authorization",

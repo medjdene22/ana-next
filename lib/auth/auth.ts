@@ -13,7 +13,7 @@ export const auth = betterAuth({
     enabled: true,
   },
   plugins: [openAPI(), reactStartCookies()],
-  trustedOrigins: ["http://localhost:3000", "http://localhost:3001"],
+  trustedOrigins: ["http://localhost:3000", "http://localhost:3001", https://imad-ana.pages.dev/],
   advanced: {
     defaultCookieAttributes: {
       sameSite: "none",
