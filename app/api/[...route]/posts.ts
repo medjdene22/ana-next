@@ -88,14 +88,14 @@ const app = new Hono()
       return c.json({ error: "Unauthorized" }, 403);
     }
 
-    const [subs] = await db
+    const [{ subscriptions }] = await db
       .select({
-        subscription: subscription.subscribe,
+        subscriptions: subscription.subscribe,
       })
       .from(subscription)
       .where(eq(subscription.userId, session.user.id));
 
-    return c.json({ subs });
+    return c.json({ subscriptions });
   })
   .patch(
     "/sub",
