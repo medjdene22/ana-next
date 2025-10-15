@@ -14,7 +14,13 @@ export const auth = betterAuth({
   },
   plugins: [openAPI(), reactStartCookies()],
   trustedOrigins: ["http://localhost:3000", "http://localhost:3001"],
-
+  advanced: {
+    defaultCookieAttributes: {
+      sameSite: "none",
+      secure: true,
+      partitioned: true, // New browser standards will mandate this for foreign cookies
+    },
+  },
 });
 
 // console.log('🧩 BetterAuth Routes:', auth.handler)
