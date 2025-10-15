@@ -89,7 +89,9 @@ const app = new Hono()
     }
 
     const [subs] = await db
-      .select()
+      .select({
+        subscription: subscription.subscribe,
+      })
       .from(subscription)
       .where(eq(subscription.userId, session.user.id));
 
