@@ -1,7 +1,12 @@
 import { Hono } from "hono";
 import { auth } from "@/lib/auth/auth";
 import { db } from "@/db/index";
-import { favorite, insertFavSchima } from "@/db/schema";
+import {
+  favorite,
+  subscription,
+  insertFavSchima,
+  insertSubscribe,
+} from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 
@@ -73,7 +78,62 @@ const app = new Hono()
       );
 
     return c.json({ success: true });
-  });
+  })
+
+  .get("/sub", async (c) => {
+    const session = await auth.api.getSession({
+      headers: c.req.raw.headers,
+    });
+    if (!session?.user) {
+      return c.json({ error: "Unauthorized" }, 403);
+    }
+
+    const [subs] = await db
+      .select()
+      .from(subscription)
+      .where(eq(favorite.userId, session.user.id));
+
+    return c.json({ subs });
+  })
+  .patch(
+    "/sub",
+    zValidator(
+      "json",
+      insertSubscribe.pick({
+        subscribe: true,
+      }),
+    ),
+    async (c) => {
+      const session = await auth.api.getSession({
+        headers: c.req.raw.headers,
+      });
+      if (!session?.user) {
+        return c.json({ error: "Unauthorized" }, 403);
+      }
+
+      const { subscribe } = c.req.valid("json");
+
+      // const [subs] = await db
+      //   .select()
+      //   .from(subscription)
+      //   .where(eq(favorite.userId, session.user.id));
+      await db
+        .insert(subscription)
+        .values({
+          userId: session.user.id,
+          subscribe,
+        })
+        .onConflictDoUpdate({
+          target: subscription.userId, // unique column
+          set: {
+            subscribe, // updates the JSON
+            updatedAt: new Date(), // refresh timestamp
+          },
+        });
+
+      return c.json({ success: true });
+    },
+  );
 //delete favorite
 
 export default app;

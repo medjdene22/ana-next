@@ -5,6 +5,7 @@ import {
   text,
   timestamp,
   unique,
+  jsonb,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 
@@ -83,4 +84,29 @@ export const favorite = pgTable(
   ],
 );
 
+export const subscription = pgTable(
+  "subscription",
+  {
+    id: serial("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+
+    // store all subscription data as JSON
+    subscribe: jsonb("subscribe")
+      .$type<Record<string, string[]>>() // ✅ typed { lang: string[] }
+      .notNull(),
+
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    unique().on(table.userId), // ✅ each user can have only one subscription
+  ],
+);
+
 export const insertFavSchima = createInsertSchema(favorite);
+export const insertSubscribe = createInsertSchema(subscription);
