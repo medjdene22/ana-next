@@ -26,7 +26,7 @@ const app = new Hono()
     return c.json({ favorites });
   })
   .post(
-    "/",
+    "/favorite",
     zValidator(
       "json",
       insertFavSchima.pick({
@@ -55,7 +55,7 @@ const app = new Hono()
       return c.json({ session });
     },
   )
-  .delete("/:postId", async (c) => {
+  .delete("/favorite/:postId", async (c) => {
     const session = await auth.api.getSession({
       headers: c.req.raw.headers,
     });
