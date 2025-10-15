@@ -31,14 +31,14 @@ app
         "X-Requested-With",
         "X-Better-Auth",
       ],
-      allowMethods: ["POST", "GET", "OPTIONS"],
+      allowMethods: ["POST", "GET", "OPTIONS", "DELETE"],
       exposeHeaders: ["Content-Length"],
       maxAge: 600,
       credentials: true,
     }),
   )
   .options("*", (c) => {
-    c.header("Access-Control-Allow-Origin", "http://localhost:3001");
+    c.header("Access-Control-Allow-Origin", "*");
     c.header("Access-Control-Allow-Credentials", "true");
     c.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
     c.header(
