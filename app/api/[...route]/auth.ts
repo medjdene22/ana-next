@@ -6,7 +6,7 @@ const router = new Hono<{ Bindings: AuthType }>({
   strict: false,
 });
 
-router.on(["POST", "GET"], "/*", async (c) => {
+router.on(["POST", "GET", "OPTIONS"], "/*", async (c) => {
   return auth.handler(c.req.raw);
 });
 // router.get("/ok", async (c) => {

@@ -13,7 +13,8 @@ export const auth = betterAuth({
     enabled: true,
   },
   plugins: [openAPI(), reactStartCookies()],
-  trustedOrigins: ["http://localhost:3000"],
+  trustedOrigins: ["http://localhost:3000", "http://localhost:3001"],
+
 });
 
 // console.log('🧩 BetterAuth Routes:', auth.handler)
