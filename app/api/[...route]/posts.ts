@@ -91,7 +91,7 @@ const app = new Hono()
     const [subs] = await db
       .select()
       .from(subscription)
-      .where(eq(favorite.userId, session.user.id));
+      .where(eq(subscription.userId, session.user.id));
 
     return c.json({ subs });
   })
