@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { auth } from "@/lib/auth/auth";
 import { db } from "@/db/index";
 import { favorite, insertFavSchima } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
 
 const app = new Hono()
@@ -52,14 +52,28 @@ const app = new Hono()
         })
         .onConflictDoNothing();
 
-      // const favorites = await db
-      //   .select({
-      //     id: favorite.id,
-
-      // return c.json({ favorites });
-      //
       return c.json({ session });
     },
-  );
+  )
+  .delete("/:postId", async (c) => {
+    const session = await auth.api.getSession({
+      headers: c.req.raw.headers,
+    });
+
+    if (!session?.user) {
+      return c.json({ error: "Unauthorized" }, 403);
+    }
+
+    const postId = c.req.param("postId");
+
+    await db
+      .delete(favorite)
+      .where(
+        and(eq(favorite.userId, session.user.id), eq(favorite.postId, postId)),
+      );
+
+    return c.json({ success: true });
+  });
+//delete favorite
 
 export default app;
