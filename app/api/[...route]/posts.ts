@@ -3,7 +3,6 @@ import { auth } from "@/lib/auth/auth";
 import { db } from "@/db/index";
 import { favorite, insertFavSchima } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { string, z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 
 const app = new Hono()
