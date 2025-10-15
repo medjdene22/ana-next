@@ -18,7 +18,7 @@ export const auth = betterAuth({
     defaultCookieAttributes: {
       sameSite: "none",
       secure: true,
-      partitioned: true, // New browser standards will mandate this for foreign cookies
+      partitioned: true, // Newbrowser standards will mandate this for foreign cookies
     },
   },
 });
