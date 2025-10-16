@@ -5,6 +5,7 @@ import auth from "./auth";
 import type { AuthType } from "@/lib/auth/auth";
 
 import posts from "./posts";
+import fibladi from "./fibladi";
 
 const app = new Hono<{ Variables: AuthType }>({ strict: false }).basePath(
   "/api",
@@ -51,7 +52,8 @@ app
     return c.body(null, 204);
   })
   .route("/auth", auth)
-  .route("/posts", posts);
+  .route("/posts", posts)
+  .route("/fibladi", fibladi);
 
 export const GET = handle(app);
 export const POST = handle(app);

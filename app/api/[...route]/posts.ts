@@ -9,8 +9,32 @@ import {
 } from "@/db/schema";
 import { and, eq } from "drizzle-orm";
 import { zValidator } from "@hono/zod-validator";
+import z from "zod";
 
 const app = new Hono()
+  .get(
+    "/byIds",
+    zValidator(
+      "query",
+      z.object({
+        ids: z.string().transform((val) => val.split(",")),
+      }),
+    ),
+    async (c) => {
+      const values = c.req.valid("query");
+      const codes = values.ids.map(generateShortlinks);
+      const posts = await Promise.all(
+        codes.map(async (code) => {
+          const res = await fetch(
+            `https://apin.fibladi.com/fibladi/shortlink?c=${code}`,
+          );
+          return res.json();
+        }),
+      );
+
+      return c.json({ posts });
+    },
+  )
   .get("/favorite", async (c) => {
     const session = await auth.api.getSession({
       headers: c.req.raw.headers,
@@ -21,14 +45,22 @@ const app = new Hono()
 
     const favorites = await db
       .select({
-        id: favorite.id,
-
         postId: favorite.postId,
       })
       .from(favorite)
       .where(eq(favorite.userId, session.user.id));
 
-    return c.json({ favorites });
+    const codes = favorites.map((fav) => generateShortlinks(fav.postId));
+    const posts = await Promise.all(
+      codes.map(async (code) => {
+        const res = await fetch(
+          `https://apin.fibladi.com/fibladi/shortlink?c=${code}`,
+        );
+        return res.json();
+      }),
+    );
+
+    return c.json({ posts });
   })
   .post(
     "/favorite",
@@ -139,3 +171,18 @@ const app = new Hono()
 //delete favorite
 
 export default app;
+
+function generateShortlinks(id: string): string {
+  const chars =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const base = chars.length;
+  let short = "";
+
+  let num = Number(id);
+  while (num > 0) {
+    short = chars[num % base] + short;
+    num = Math.floor(num / base);
+  }
+
+  return short;
+}
