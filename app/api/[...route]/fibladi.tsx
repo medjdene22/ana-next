@@ -13,7 +13,7 @@ const app = new Hono().get(
     }),
   ),
   async (c) => {
-    return c.json({ last });
+    return c.json(last);
   },
 );
 
