@@ -25,6 +25,7 @@ app
         "http://localhost:3000",
         "http://localhost:3001",
         "https://imad-ana.pages.dev",
+        "http://95.216.252.98:8030",
       ], // replace with your origin
       allowHeaders: [
         "Content-Type",
