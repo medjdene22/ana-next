@@ -18,6 +18,7 @@ export const auth = betterAuth({
     "http://localhost:3001",
     "https://imad-ana.pages.dev",
     "http://95.216.252.98:8030",
+    "https://betaanar.fibladi.com",
   ],
   advanced: {
     defaultCookieAttributes: {
