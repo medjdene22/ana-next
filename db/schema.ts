@@ -20,6 +20,12 @@ export const user = pgTable("user", {
     .defaultNow()
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
+  sex: text("sex"),
+  birthDate: timestamp("birth_date"),
+  job: text("job"),
+  Wilaya: text("wilaya"),
+  phoneNumber: text("phone_number"),
+  preferedLanguage: text("prefered_language"),
 });
 
 export const session = pgTable("session", {

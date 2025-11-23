@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { auth } from "@/lib/auth/auth";
+import { auth } from "@/lib/auth";
 import { db } from "@/db/index";
 import {
   favorite,

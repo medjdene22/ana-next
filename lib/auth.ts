@@ -12,6 +12,35 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  user: {
+    additionalFields: {
+      sex: {
+        type: "string",
+        required: false,
+      },
+      birthDate: {
+        type: "date",
+        required: false,
+      },
+      job: {
+        type: "string",
+        required: false,
+      },
+      Wilaya: {
+        type: "string",
+        required: false,
+      },
+      phoneNumber: {
+        type: "string",
+        required: false,
+      },
+      preferedLanguage: {
+        type: "string",
+        enum: ["en", "ar", "fa"],
+        required: false,
+      },
+    },
+  },
   plugins: [openAPI(), reactStartCookies()],
   trustedOrigins: [
     "http://localhost:3000",

@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { handle } from "hono/vercel";
 import { cors } from "hono/cors";
 import auth from "./auth";
-import type { AuthType } from "@/lib/auth/auth";
+import type { AuthType } from "@/lib/auth";
 
 import posts from "./posts";
 import fibladi from "./fibladi";
