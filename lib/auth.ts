@@ -19,7 +19,7 @@ export const auth = betterAuth({
         required: false,
       },
       birthDate: {
-        type: "date",
+        type: "string",
         required: false,
       },
       job: {
@@ -36,7 +36,6 @@ export const auth = betterAuth({
       },
       preferedLanguage: {
         type: "string",
-        enum: ["en", "ar", "fa"],
         required: false,
       },
     },

@@ -13,7 +13,7 @@ export const user = pgTable("user", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
   sex: text("sex"),
-  birthDate: timestamp("birth_date"),
+  birthDate: text("birth_date"),
   job: text("job"),
   Wilaya: text("wilaya"),
   phoneNumber: text("phone_number"),
