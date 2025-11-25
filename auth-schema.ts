@@ -18,7 +18,7 @@ export const user = pgTable("user", {
   Wilaya: text("wilaya"),
   phoneNumber: text("phone_number"),
   preferedLanguage: text("prefered_language"),
-  news_subscriptions: text("news_subscriptions"),
+  news_subscriptions: text("news_subscriptions").array(),
 });
 
 export const session = pgTable(

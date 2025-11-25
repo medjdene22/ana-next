@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { s3Client } from "@/lib/r2Client";
-import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import { auth } from "@/lib/auth";
 
 const app = new Hono();
@@ -63,6 +63,7 @@ app.post("/avatar", async (c) => {
       return c.json({ error: "Server misconfiguration" }, 500);
     }
 
+    const oldFile = session.user.image;
     const fileUrl = `${publicDomain}/${fileName}`;
 
     // 8. Update User Profile
@@ -72,6 +73,24 @@ app.post("/avatar", async (c) => {
         image: fileUrl,
       },
     });
+
+    if (oldFile) {
+      try {
+        const oldKey = oldFile.replace(`${publicDomain}/`, "");
+
+        await s3Client.send(
+          new DeleteObjectCommand({
+            Bucket: process.env.R2_BUCKET_NAME,
+            Key: oldKey,
+          }),
+        );
+
+        console.log("Old avatar removed:", oldKey);
+      } catch (err) {
+        console.error("Failed to delete old avatar:", err);
+        // Don't return error; it's non-critical
+      }
+    }
 
     return c.json({
       message: "File uploaded successfully",
