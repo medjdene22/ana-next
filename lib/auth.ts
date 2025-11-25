@@ -38,6 +38,10 @@ export const auth = betterAuth({
         type: "string",
         required: false,
       },
+      news_subscriptions: {
+        type: "string",
+        required: false,
+      },
     },
   },
   plugins: [openAPI(), reactStartCookies()],

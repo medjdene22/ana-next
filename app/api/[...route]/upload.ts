@@ -6,7 +6,6 @@ import { auth } from "@/lib/auth";
 const app = new Hono();
 
 app.post("/avatar", async (c) => {
-  // 1. Auth Check
   const session = await auth.api.getSession({
     headers: c.req.raw.headers,
   });
